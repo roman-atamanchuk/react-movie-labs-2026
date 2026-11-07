@@ -8,8 +8,8 @@ import Fab from "@mui/material/Fab";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import Drawer from "@mui/material/Drawer";
-import MovieReviews from "../movieReviews"
-
+import MovieReviews from "../movieReviews";
+import MovieCredits from "../movieCredits";
 const root = {
   display: "flex",
   justifyContent: "center",
@@ -20,8 +20,9 @@ const root = {
 };
 const chip = { margin: 0.5 };
 
-const MovieDetails = ({ movie }) => {  // Don't miss this!
-const [drawerOpen, setDrawerOpen] = useState(false);
+const MovieDetails = ({ movie }) => {
+  // Don't miss this!
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
     <>
@@ -65,20 +66,25 @@ const [drawerOpen, setDrawerOpen] = useState(false);
           </li>
         ))}
       </Paper>
+      <MovieCredits movie={movie} />
       <Fab
         color="secondary"
         variant="extended"
-        onClick={() =>setDrawerOpen(true)}
+        onClick={() => setDrawerOpen(true)}
         sx={{
-          position: 'fixed',
-          bottom: '1em',
-          right: '1em'
+          position: "fixed",
+          bottom: "1em",
+          right: "1em",
         }}
       >
         <NavigationIcon />
         Reviews
       </Fab>
-      <Drawer anchor="top" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+      <Drawer
+        anchor="top"
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+      >
         <MovieReviews movie={movie} />
       </Drawer>
     </>
