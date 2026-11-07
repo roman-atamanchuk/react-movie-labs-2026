@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { getUpcomingMovies } from "../api/tmdb-api";
-import AddToFavoritesIcon from "../components/cardIcons/addToFavorites";
+import AddToPlaylistIcon from "../components/cardIcons/addToPlaylist";
 
 const UpcomingMoviesPage = () => {
   const [movies, setMovies] = useState([]);
@@ -26,7 +26,7 @@ const UpcomingMoviesPage = () => {
       title="Upcoming Movies"
       movies={movies}
       action={(movie) => {
-        return <AddToFavoritesIcon movie={movie} />
+        return <AddToPlaylistIcon movie={movie} />
       }}
     />
   );
