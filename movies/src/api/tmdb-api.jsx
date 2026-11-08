@@ -163,9 +163,11 @@ export const getTopRatedMovies = ({ queryKey }) => {
       throw error;
     });
 };
-export const getPlayingNowMovies = () => {
+export const getPlayingNowMovies = ({ queryKey }) => {
+  const [, pagePart] = queryKey;
+  const { page } = pagePart;
   return fetch(
-    `https://api.themoviedb.org/3/movie/now_playing?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`,
+    `https://api.themoviedb.org/3/movie/now_playing?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=${page}`,
   )
     .then((response) => {
       if (!response.ok) {
