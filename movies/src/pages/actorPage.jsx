@@ -1,9 +1,11 @@
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import { getPerson } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import { getPerson, getPersonMovieCredits } from "../api/tmdb-api";
+import MovieList from "../components/movieList";
+import AddToFavoritesIcon from "../components/cardIcons/addToFavorites";
 
 const ActorPage = () => {
   const { id } = useParams();
@@ -17,8 +19,12 @@ const ActorPage = () => {
     queryKey: ["person", { id: id }],
     queryFn: getPerson,
   });
+  const { data: credits, isPending: creditsPending } = useQuery({
+    queryKey: ["personMovies", { id: id }],
+    queryFn: getPersonMovieCredits,
+  });
 
-  if (isPending) return <Spinner />;
+  if (isPending || creditsPending) return <Spinner />;
   if (isError) return <h1>{error.message}</h1>;
   return (
     <Grid container spacing={5} sx={{ padding: "20px" }}>
@@ -37,6 +43,17 @@ const ActorPage = () => {
         <Typography variant="body1" sx={{ marginTop: 2 }}>
           {actor.biography}
         </Typography>
+        <Typography variant="h4" sx={{ marginTop: 4 }}>
+          Known For
+        </Typography>
+        <Grid container>
+          <MovieList
+            movies={[...credits.cast]
+              .sort((a, b) => b.popularity - a.popularity)
+              .slice(0, 12)}
+            action={(movie) => <AddToFavoritesIcon movie={movie} />}
+          />
+        </Grid>
       </Grid>
     </Grid>
   );
