@@ -3,6 +3,7 @@ import Paper from "@mui/material/Paper";
 import { useQuery } from "@tanstack/react-query";
 import { getMovieCredits } from "../../api/tmdb-api";
 import Spinner from "../spinner";
+import { Link } from "react-router";
 
 export default function MovieCredits({ movie }) {
   const { data, error, isPending, isError } = useQuery({
@@ -38,6 +39,9 @@ export default function MovieCredits({ movie }) {
           <Chip
             label={`${actor.name} as ${actor.character}`}
             sx={{ margin: 0.5 }}
+            component={Link}
+            to={`/actors/${actor.id}`}
+            clickable
           />
         </li>
       ))}
