@@ -7,6 +7,8 @@ import Grid from "@mui/material/Grid";
 function MovieListPageTemplate({ movies, title, action }) {
   const [nameFilter, setNameFilter] = useState("");
   const [genreFilter, setGenreFilter] = useState("0");
+  const [ratingFilter, setRatingFilter] = useState("0");
+  const minRating = Number(ratingFilter);
   const genreId = Number(genreFilter);
 
   let displayedMovies = movies
@@ -15,11 +17,15 @@ function MovieListPageTemplate({ movies, title, action }) {
     })
     .filter((m) => {
       return genreId > 0 ? m.genre_ids.includes(genreId) : true;
+    })
+    .filter((m) => {
+      return m.vote_average >= minRating;
     });
 
   const handleChange = (type, value) => {
     if (type === "name") setNameFilter(value);
-    else setGenreFilter(value);
+    else if (type === "genre") setGenreFilter(value);
+    else if (type === "rating") setRatingFilter(value);
   };
 
   return (
@@ -27,16 +33,17 @@ function MovieListPageTemplate({ movies, title, action }) {
       <Grid size={12}>
         <Header title={title} />
       </Grid>
-      <Grid container sx={{flex: "1 1 500px"}}>
+      <Grid container sx={{ flex: "1 1 500px" }}>
         <Grid
           key="find"
-          size={{xs: 12, sm: 6, md: 4, lg: 3, xl: 2}}
-          sx={{padding: "20px"}}
+          size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}
+          sx={{ padding: "20px" }}
         >
           <FilterCard
             onUserInput={handleChange}
             titleFilter={nameFilter}
             genreFilter={genreFilter}
+            ratingFilter={ratingFilter}
           />
         </Grid>
         <MovieList action={action} movies={displayedMovies}></MovieList>

@@ -11,8 +11,8 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import img from "../../images/pexels-dziana-hasanbekava-5480827.jpg";
 import { getGenres } from "../../api/tmdb-api";
-import { useQuery } from '@tanstack/react-query';
-import Spinner from '../spinner';
+import { useQuery } from "@tanstack/react-query";
+import Spinner from "../spinner";
 
 const formControl = {
   margin: 1,
@@ -22,7 +22,7 @@ const formControl = {
 
 export default function FilterMoviesCard(props) {
   const { data, error, isPending, isError } = useQuery({
-    queryKey: ['genres'],
+    queryKey: ["genres"],
     queryFn: getGenres,
   });
 
@@ -34,7 +34,7 @@ export default function FilterMoviesCard(props) {
     return <h1>{error.message}</h1>;
   }
   const genres = data.genres;
-  if (genres[0].name !== "All"){
+  if (genres[0].name !== "All") {
     genres.unshift({ id: "0", name: "All" });
   }
 
@@ -49,6 +49,9 @@ export default function FilterMoviesCard(props) {
 
   const handleGenreChange = (e) => {
     handleChange(e, "genre", e.target.value);
+  };
+  const handleRatingChange = (e) => {
+    handleChange(e, "rating", e.target.value);
   };
 
   return (
@@ -89,6 +92,21 @@ export default function FilterMoviesCard(props) {
                 </MenuItem>
               );
             })}
+          </Select>
+        </FormControl>
+        <FormControl sx={{ ...formControl }}>
+          <InputLabel id="rating-label">Min rating</InputLabel>
+          <Select
+            labelId="rating-label"
+            id="rating-select"
+            value={props.ratingFilter}
+            onChange={handleRatingChange}
+          >
+            <MenuItem value="0">Any</MenuItem>
+            <MenuItem value="5">5+ ⭐</MenuItem>
+            <MenuItem value="6">6+ ⭐</MenuItem>
+            <MenuItem value="7">7+ ⭐</MenuItem>
+            <MenuItem value="8">8+ ⭐</MenuItem>
           </Select>
         </FormControl>
       </CardContent>
